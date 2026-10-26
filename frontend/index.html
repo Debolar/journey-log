@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Journey Log</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap top-inner">
+      <div>
+        <h1>Journey Log</h1>
+        <p class="tagline">Track what you learn, one entry at a time.</p>
+      </div>
+      <div class="status" id="status" title="Backend connection">
+        <span class="dot"></span><span id="status-text">Connecting…</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="stats" aria-label="Progress">
+      <div class="stat"><span class="stat-num" id="stat-total">0</span><span class="stat-label">Entries</span></div>
+      <div class="stat"><span class="stat-num" id="stat-done">0</span><span class="stat-label">Completed</span></div>
+      <div class="stat"><span class="stat-num" id="stat-pct">0%</span><span class="stat-label">Progress</span></div>
+    </section>
+
+    <section class="card">
+      <h2>New entry</h2>
+      <form id="entry-form" novalidate>
+        <div class="row">
+          <label class="grow">
+            <span>What did you learn or plan to learn?</span>
+            <input id="title" name="title" maxlength="200" placeholder="e.g. Built my first GitHub Actions pipeline" required>
+          </label>
+          <label>
+            <span>Topic</span>
+            <select id="topic" name="topic"></select>
+          </label>
+        </div>
+        <label>
+          <span>Notes (optional)</span>
+          <textarea id="notes" name="notes" rows="2" placeholder="Commands, links, what tripped you up…"></textarea>
+        </label>
+        <div class="form-foot">
+          <p class="error" id="form-error" role="alert"></p>
+          <button type="submit">Add entry</button>
+        </div>
+      </form>
+    </section>
+
+    <section>
+      <div class="list-head">
+        <h2>Entries</h2>
+        <label class="filter">
+          <span class="sr-only">Filter by topic</span>
+          <select id="filter"><option value="">All topics</option></select>
+        </label>
+      </div>
+      <ul class="entries" id="entries"></ul>
+      <p class="empty" id="empty" hidden>No entries yet. Add your first one above.</p>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <span id="version">version –</span>
+    <span id="env"></span>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

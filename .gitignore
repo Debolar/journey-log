@@ -1,0 +1,28 @@
+# Dependencies (reinstalled with npm install, never committed)
+node_modules/
+
+# Environment files hold secrets. Commit .env.example, never .env
+.env
+.env.*
+!.env.example
+
+# Test and build output
+coverage/
+dist/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Terraform (for later milestones)
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!example.tfvars
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
