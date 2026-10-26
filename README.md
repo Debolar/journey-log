@@ -100,9 +100,9 @@ curl -X POST http://localhost:3000/api/entries \
 Work through these in order. Each milestone is one or more pull requests into `main`. Tick them off as you go; this checklist becomes part of your portfolio.
 
 ### Milestone 1: Git and GitHub
-- [ ] Create a GitHub repo, push this project, rename the default branch to `main`
-- [ ] Protect `main`: require pull requests, block direct pushes
-- [ ] From now on, every change goes through a branch and a PR
+- [x] Create a GitHub repo, push this project, rename the default branch to `main`
+- [x] Protect `main`: require pull requests, block direct pushes
+- [x] From now on, every change goes through a branch and a PR
 
 ### Milestone 2: Docker
 - [ ] `backend/Dockerfile`: small base image (e.g. `node:20-alpine`), install only production dependencies (`npm ci --omit=dev`), run as a non-root user, expose port 3000
