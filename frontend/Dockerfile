@@ -1,5 +1,5 @@
 # Small web server image
-FROM nginx:1.27-alpine
+FROM nginx:stable-alpine
 
 # Our Nginx settings
 COPY nginx.conf /etc/nginx/conf.d/default.conf

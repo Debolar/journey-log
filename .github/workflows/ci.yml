@@ -1,38 +1,64 @@
 name: CI
 
-# When to run
 on:
   pull_request:
     branches: [main]
   push:
     branches: [main]
 
+env:
+  BACKEND_IMAGE: ghcr.io/debolar/journey-log-backend
+  FRONTEND_IMAGE: ghcr.io/debolar/journey-log-frontend
+
 jobs:
   test:
-    # GitHub gives us a fresh Ubuntu machine for each run
     runs-on: ubuntu-latest
-
-    # Run the commands inside the backend folder
     defaults:
       run:
         working-directory: backend
-
     steps:
-      # 1. Download the code from the repo
       - uses: actions/checkout@v4
-
-      # 2. Install Node.js 20 (same as our Dockerfile)
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
           cache-dependency-path: backend/package-lock.json
-
-      # 3. Install dependencies exactly as in the lock file
       - run: npm ci
-
-      # 4. Check code quality
       - run: npm run lint
-
-      # 5. Run the tests
       - run: npm test
+
+  build:
+    # Runs only after tests pass, and only on main (not on pull requests)
+    needs: test
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build images
+        run: |
+          docker build --build-arg APP_VERSION=${{ github.sha }} -t $BACKEND_IMAGE:${{ github.sha }} ./backend
+          docker build -t $FRONTEND_IMAGE:${{ github.sha }} ./frontend
+
+      - name: Scan images with Trivy
+        run: |
+          for image in $BACKEND_IMAGE $FRONTEND_IMAGE; do
+            docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+              aquasec/trivy:0.58.0 image \
+              --exit-code 1 --severity CRITICAL --ignore-unfixed --no-progress \
+              $image:${{ github.sha }}
+          done
+
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Push images
+        run: |
+          for image in $BACKEND_IMAGE $FRONTEND_IMAGE; do
+            docker tag $image:${{ github.sha }} $image:latest
+            docker push $image:${{ github.sha }}
+            docker push $image:latest
+          done
