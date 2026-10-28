@@ -1,0 +1,38 @@
+name: CI
+
+# When to run
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    # GitHub gives us a fresh Ubuntu machine for each run
+    runs-on: ubuntu-latest
+
+    # Run the commands inside the backend folder
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      # 1. Download the code from the repo
+      - uses: actions/checkout@v4
+
+      # 2. Install Node.js 20 (same as our Dockerfile)
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      # 3. Install dependencies exactly as in the lock file
+      - run: npm ci
+
+      # 4. Check code quality
+      - run: npm run lint
+
+      # 5. Run the tests
+      - run: npm test
