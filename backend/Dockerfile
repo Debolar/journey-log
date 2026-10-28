@@ -19,5 +19,8 @@ EXPOSE 3000
 # 7. Run as the non-root "node" user
 USER node
 
+# 7a. Let Docker check the app is healthy
+HEALTHCHECK --interval=30s --timeout=3s CMD wget -qO- http://localhost:3000/health || exit 1
+
 # 8. Start the app
 CMD ["node", "src/server.js"]

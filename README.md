@@ -105,16 +105,16 @@ Work through these in order. Each milestone is one or more pull requests into `m
 - [x] From now on, every change goes through a branch and a PR
 
 ### Milestone 2: Docker
-- [ ] `backend/Dockerfile`: small base image (e.g. `node:20-alpine`), install only production dependencies (`npm ci --omit=dev`), run as a non-root user, expose port 3000
-- [ ] Add a `HEALTHCHECK` that calls `/health`
-- [ ] `frontend/Dockerfile`: serve the static files with Nginx
-- [ ] `frontend/nginx.conf`: serve the files, and forward `/api/` to the backend container
-- [ ] `docker-compose.yml` with three services: `frontend`, `backend`, `db` (`postgres:16`)
-  - [ ] Mount `backend/db/init.sql` into `/docker-entrypoint-initdb.d/` on the db container
-  - [ ] Use a named volume so data survives `docker compose down` and `up`
-  - [ ] Pass `DATABASE_URL` to the backend through environment variables
-- [ ] `docker compose up` → open the app → add an entry → restart → the entry is still there
-- [ ] Add a `.dockerignore` so `node_modules` is not copied into the image
+- [x] `backend/Dockerfile`: small base image (e.g. `node:20-alpine`), install only production dependencies (`npm ci --omit=dev`), run as a non-root user, expose port 3000
+- [x] Add a `HEALTHCHECK` that calls `/health`
+- [x] `frontend/Dockerfile`: serve the static files with Nginx
+- [x] `frontend/nginx.conf`: serve the files, and forward `/api/` to the backend container
+- [x] `docker-compose.yml` with three services: `frontend`, `backend`, `db` (`postgres:16`)
+  - [x] Mount `backend/db/init.sql` into `/docker-entrypoint-initdb.d/` on the db container
+  - [x] Use a named volume so data survives `docker compose down` and `up`
+  - [x] Pass `DATABASE_URL` to the backend through environment variables
+- [x] `docker compose up` → open the app → add an entry → restart → the entry is still there
+- [x] Add a `.dockerignore` so `node_modules` is not copied into the image
 
 ### Milestone 3: CI with GitHub Actions
 - [ ] On every pull request: install dependencies, run `npm run lint` and `npm test`
