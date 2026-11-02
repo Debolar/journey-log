@@ -5,6 +5,12 @@ const { Pool } = require('pg');
 
 function createPostgresStore(databaseUrl) {
   const pool = new Pool({ connectionString: databaseUrl });
+  
+  // If the database restarts, idle connections in the pool are dropped.
+  // Without this handler, Node treats that as an unhandled error and the whole API crashes.
+  pool.on('error', (err) => {
+    console.error('Database connection lost:', err.message);
+  });
 
   return {
     kind: 'postgres',

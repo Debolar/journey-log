@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: journey-log-backend:v1
+          image: journey-log-backend:v2
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
